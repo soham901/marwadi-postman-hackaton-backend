@@ -1,11 +1,10 @@
 from sqlmodel import SQLModel, Field
 from typing import Optional
-from datetime import date
 
 
 class Listing(SQLModel, table=True):
     id: Optional[int] = Field(default=None, primary_key=True)
-    hospital_id: int
+    hospital_id: int = Field(foreign_key="hospital.id")
     name: str
     description: Optional[str]
     quantity: int

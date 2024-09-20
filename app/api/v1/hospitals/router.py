@@ -5,14 +5,14 @@ from .models import Hospital
 
 router = APIRouter()
 
-@router.post("/hospitals/", response_model=Hospital)
+@router.post("/", response_model=Hospital)
 def create_hospital(hospital: Hospital, session: Session = Depends(get_session)):
     session.add(hospital)
     session.commit()
     session.refresh(hospital)
     return hospital
 
-@router.get("/hospitals/{hospital_id}", response_model=Hospital)
+@router.get("/{hospital_id}", response_model=Hospital)
 def get_hospital(hospital_id: int, session: Session = Depends(get_session)):
     hospital = session.get(Hospital, hospital_id)
     if not hospital:
@@ -20,7 +20,7 @@ def get_hospital(hospital_id: int, session: Session = Depends(get_session)):
     return hospital
 
 
-@router.get("/hospitals/")
+@router.get("/")
 def get_hospitals(session: Session = Depends(get_session)):
     statement = select(Hospital)
     results = session.exec(statement).all()
