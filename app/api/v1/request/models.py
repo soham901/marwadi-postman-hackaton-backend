@@ -1,16 +1,16 @@
 from sqlmodel import SQLModel, Field
 from typing import Optional
 from datetime import datetime
-from enum import StrEnum, auto
+from enum import Enum
 
-class ItemType(StrEnum):
-    MEDICINE = auto()
-    EQUIPMENT = auto()
+class ItemType(Enum):
+    MEDICINE = "medicine"
+    EQUIPMENT = "equipment"
 
-class Urgency(StrEnum):
-    LOW = auto()
-    MEDIUM = auto()
-    HIGH = auto()
+class Urgency(Enum):
+    LOW = "low"
+    MEDIUM = "medium"
+    HIGH = "high"
 
 class Request(SQLModel, table=True):
     id: Optional[int] = Field(default=None, primary_key=True)
