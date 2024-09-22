@@ -3,6 +3,13 @@ from typing import Optional
 from datetime import datetime
 from enum import Enum
 
+class Status(Enum):
+    OPEN = "open"
+    CLOSED = "closed"
+    PENDING = "pending"
+    REJECTED = "rejected"
+
+
 class ItemType(Enum):
     MEDICINE = "medicine"
     EQUIPMENT = "equipment"
@@ -20,3 +27,5 @@ class Request(SQLModel, table=True):
     created_at: Optional[datetime] = Field(default=datetime.now())
     item_type: ItemType
     urgency: Urgency
+    description: Optional[str] = None
+    status: Status
