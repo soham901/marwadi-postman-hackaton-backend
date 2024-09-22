@@ -26,3 +26,13 @@ def get_listings(session: Session = Depends(get_session)):
     statement = select(Listing)
     results = session.exec(statement).all()
     return results
+
+@router.delete("/{listing_id}", status_code=204)
+def delete_hospital(listing_id: int, session: Session = Depends(get_session)):
+    listing = session.get(Listing, listing_id)
+    if not listing:
+        raise HTTPException(status_code=404, detail="Listing not found")
+    
+    session.delete(listing)
+    session.commit()
+    return
