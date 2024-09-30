@@ -2,7 +2,7 @@ import threading
 
 from pydantic import BaseModel
 from enum import Enum
-from typing import List, Tuple
+from typing import List, Tuple, Dict
 
 
 class Input(BaseModel):
@@ -31,7 +31,7 @@ class Strategy(str, Enum):
 
 def process_allocation(
     request_volume: int, hospitals: List[Input], strategy: Strategy
-) -> Tuple[float, List[Tuple[Input, int]]]:
+) -> Tuple[float, List[Dict[Input, int]]]:
     if request_volume < 0:
         request_volume = 0
 
@@ -61,16 +61,14 @@ def process_allocation(
         item.quantity -= take_volume
 
         suppliers.append(
-            (
-                {
-                    "hospital_id": item.hospital_id,
-                    "name": item.name,
-                    "per_unit_cost": item.per_unit_cost,
-                    "distance": item.distance,
-                    "quantity": item.quantity,
-                    "volume_allocated": take_volume,
-                }
-            )
+            {
+                "hospital_id": item.hospital_id,
+                "name": item.name,
+                "per_unit_cost": item.per_unit_cost,
+                "distance": item.distance,
+                "quantity": item.quantity,
+                "volume_allocated": take_volume,
+            }
         )
 
     return total_cost, suppliers
