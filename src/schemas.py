@@ -56,3 +56,11 @@ class RequestCreate(BaseModel):
     quantity: int
     per_unit_cost: float
     distance: float
+
+
+class RequestRead(RequestCreate):
+    id: int
+
+
+class MedicineRequest(RequestRead):
+    pass

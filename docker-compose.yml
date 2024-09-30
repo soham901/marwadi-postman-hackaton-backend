@@ -1,0 +1,46 @@
+version: "3.8"
+
+services:
+  redis:
+    image: "redis:latest"
+    container_name: "redis"
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+    restart: always
+
+  # Optionally, you can add your FastAPI and Celery service configurations here as well:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile # Assuming your FastAPI app has a Dockerfile
+    depends_on:
+      - redis
+    environment:
+      - CELERY_BROKER_URL=redis://redis:6379/0
+      - CELERY_RESULT_BACKEND=redis://redis:6379/0
+    ports:
+      - "8000:8000"
+    volumes:
+      - .:/app
+    command: uvicorn src.main:app --host 0.0.0.0 --port 8000
+    restart: always
+
+  celery_worker:
+    build:
+      context: .
+      dockerfile: Dockerfile # Assuming Celery shares the same Dockerfile as FastAPI
+    depends_on:
+      - redis
+    environment:
+      - CELERY_BROKER_URL=redis://redis:6379/0
+      - CELERY_RESULT_BACKEND=redis://redis:6379/0
+    command: celery -A src.tasks worker --loglevel=info
+    volumes:
+      - .:/app
+    restart: always
+
+volumes:
+  redis_data:
+    driver: local

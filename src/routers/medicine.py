@@ -2,7 +2,12 @@ from fastapi import APIRouter, Depends, HTTPException
 from sqlmodel import Session, select
 from typing import List
 from src.models import Medicine, User
-from src.schemas import MedicineCreate, MedicineRead, MedicineUpdate
+from src.schemas import (
+    MedicineCreate,
+    MedicineRead,
+    MedicineUpdate,
+    MedicineWithHospital,
+)
 from src.dependencies import get_session
 from src.security import get_current_user
 
@@ -33,7 +38,7 @@ def read_medicines(
     return medicines
 
 
-@router.get("/{medicine_id}", response_model=MedicineRead)
+@router.get("/{medicine_id}", response_model=MedicineWithHospital)
 def read_medicine(
     medicine_id: int,
     session: Session = Depends(get_session),
