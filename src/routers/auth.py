@@ -6,7 +6,7 @@ from src.schemas import UserCreate, UserRead
 from src.dependencies import get_session
 from src.security import get_password_hash, verify_password, create_access_token
 
-router = APIRouter()
+router = APIRouter(tags=["auth"])
 
 
 @router.post("/token")

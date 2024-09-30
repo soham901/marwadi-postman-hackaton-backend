@@ -4,7 +4,7 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
 from src.algo import start_allocation_algorithm
-from .routers import hospital, medicine, auth
+from .routers import hospital, medicine, auth, requests
 
 
 @asynccontextmanager
@@ -28,6 +28,7 @@ app.add_middleware(
 app.include_router(auth.router)
 app.include_router(hospital.router)
 app.include_router(medicine.router)
+app.include_router(requests.router)
 
 
 @app.get("/")

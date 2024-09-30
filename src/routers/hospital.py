@@ -11,7 +11,7 @@ from src.schemas import (
 )
 from src.dependencies import get_session
 
-router = APIRouter()
+router = APIRouter(tags=["hospitals"])
 
 
 @router.post("/hospitals/", response_model=HospitalRead)
