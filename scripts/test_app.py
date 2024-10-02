@@ -1,7 +1,7 @@
 import httpx
 from enum import Enum
 
-API_URL = "http://localhost:8000"
+API_URL = "http://13.126.120.181:8000"
 
 
 class Strategy(str, Enum):

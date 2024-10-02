@@ -15,7 +15,16 @@ async def lifespan(app: FastAPI):
     yield
 
 
-app = FastAPI()
+app = FastAPI(
+    lifespan=lifespan,
+    title="Automatic Medicine Allocation API",
+    description="API for automatic medicine allocation",
+    version="1.0.0",
+    contact={
+        "name": "Soham",
+        "url": "https://github.com/soham901",
+    }    
+)
 
 # Add CORS middleware
 app.add_middleware(
