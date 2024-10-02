@@ -1,14 +1,13 @@
 from fastapi import APIRouter, Depends, HTTPException
 from sqlmodel import Session, select
 from typing import List
-from src.models import AllocationResult, MedicineRequest, User
+from src.models import AllocationResult
 from src.schemas import (
     AllocationResultCreate,
     AllocationResultRead,
     AllocationResult as AllocationResultSchema,
 )
 from src.dependencies import get_session
-from src.security import get_current_user
 
 router = APIRouter(prefix="/allocations", tags=["allocations"])
 
@@ -17,7 +16,6 @@ router = APIRouter(prefix="/allocations", tags=["allocations"])
 def create_allocation(
     allocation: AllocationResultCreate,
     session: Session = Depends(get_session),
-    current_user: User = Depends(get_current_user),
 ):
     db_allocation = AllocationResult(**allocation.dict())
     session.add(db_allocation)
@@ -31,7 +29,6 @@ def read_allocations(
     skip: int = 0,
     limit: int = 100,
     session: Session = Depends(get_session),
-    current_user: User = Depends(get_current_user),
 ):
     allocations = session.exec(select(AllocationResult).offset(skip).limit(limit)).all()
     return allocations
@@ -41,7 +38,6 @@ def read_allocations(
 def read_allocation(
     allocation_id: int,
     session: Session = Depends(get_session),
-    current_user: User = Depends(get_current_user),
 ):
     allocation = session.get(AllocationResult, allocation_id)
     if allocation is None:
@@ -53,7 +49,6 @@ def read_allocation(
 def delete_allocation(
     allocation_id: int,
     session: Session = Depends(get_session),
-    current_user: User = Depends(get_current_user),
 ):
     allocation = session.get(AllocationResult, allocation_id)
     if allocation is None:
@@ -67,7 +62,6 @@ def delete_allocation(
 def read_allocation_by_request(
     request_id: int,
     session: Session = Depends(get_session),
-    current_user: User = Depends(get_current_user),
 ):
     allocation = session.exec(
         select(AllocationResult).where(AllocationResult.request_id == request_id)
