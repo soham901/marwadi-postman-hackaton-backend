@@ -25,4 +25,4 @@ jobs:
         run: sudo docker rm $(sudo docker ps -aq) || true
 
       - name: Build and start Docker containers
-        run: sudo docker-compose up -d --build
+        run: sudo docker compose up -d --build
