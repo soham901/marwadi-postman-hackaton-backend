@@ -13,6 +13,6 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - name: Build the Docker image
-        run: sudo docker build . --file Dockerfile --tag my-image-name:$(date +%s)
+        run: sudo docker build . --file Dockerfile --tag backend
       - name: Run the Docker container on port 8000
-        run: sudo docker run -d -p 8000:8000 my-image-name:$(date +%s)
+        run: sudo docker run -d -p 8000:8000 backend
