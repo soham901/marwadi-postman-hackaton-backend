@@ -12,11 +12,17 @@ jobs:
 
     steps:
       - uses: actions/checkout@v4
+
+      - name: Create PostgreSQL data directory
+        run: |
+          sudo mkdir -p /root/mydata/postgresql-data
+          sudo chown -R 999:999 /root/mydata/postgresql-data
+
       - name: Stop all running Docker containers
-        run: sudo docker stop $(sudo docker ps -aq)
+        run: sudo docker stop $(sudo docker ps -aq) || true
+
       - name: Remove all Docker containers
-        run: sudo docker rm $(sudo docker ps -aq)
-      - name: Build the Docker image
-        run: sudo docker build -t backend .
-      - name: Run the Docker container on port 8000
-        run: sudo docker run -d -p 8000:8000 backend
+        run: sudo docker rm $(sudo docker ps -aq) || true
+
+      - name: Build and start Docker containers
+        run: sudo docker-compose up -d --build

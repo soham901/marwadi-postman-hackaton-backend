@@ -28,9 +28,10 @@ services:
       - POSTGRES_PASSWORD=password
       - POSTGRES_DB=database
     volumes:
-      - db-data:/var/lib/postgresql/data
+      - /root/mydata/postgresql-data:/var/lib/postgresql/data
 
 volumes:
-  db-data:
   caddy_data:
+    driver: local
   caddy_config:
+    driver: local
