@@ -4,6 +4,7 @@ from typing import Optional, List
 from datetime import datetime
 
 from src.dependencies import engine
+from src.schemas import Strategy
 
 
 class User(SQLModel, table=True):
@@ -16,6 +17,8 @@ class Hospital(SQLModel, table=True):
     id: Optional[int] = Field(default=None, primary_key=True)
     name: str = Field(index=True)
     address: str
+    latitude: float
+    longitude: float
     medicines: List["Medicine"] = Relationship(back_populates="hospital")
     requests: List["MedicineRequest"] = Relationship(back_populates="hospital")
 
@@ -24,6 +27,8 @@ class Medicine(SQLModel, table=True):
     id: Optional[int] = Field(default=None, primary_key=True)
     name: str = Field(index=True)
     description: str
+    quantity: int
+    price_per_unit: float
     hospital_id: Optional[int] = Field(default=None, foreign_key="hospital.id")
     hospital: Optional[Hospital] = Relationship(back_populates="medicines")
 
@@ -41,9 +46,18 @@ class MedicineRequest(SQLModel, table=True):
     hospital_id: int = Field(foreign_key="hospital.id")
     name: str
     quantity: int
-    per_unit_cost: float
-    distance: float
+    strategy: Optional[Strategy]
     hospital: Optional["Hospital"] = Relationship(back_populates="requests")
+
+
+# class MedicineRequest(SQLModel, table=True):
+#     id: Optional[int] = Field(default=None, primary_key=True)
+#     hospital_id: int = Field(foreign_key="hospital.id")
+#     name: str
+#     quantity: int
+#     per_unit_cost: float
+#     distance: float
+#     hospital: Optional["Hospital"] = Relationship(back_populates="requests")
 
 
 AllocationResult.request = Relationship(back_populates="allocations")

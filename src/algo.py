@@ -1,5 +1,3 @@
-import threading
-
 from pydantic import BaseModel
 from enum import Enum
 from typing import List, Tuple, Dict
@@ -31,19 +29,19 @@ class Strategy(str, Enum):
 
 def process_allocation(
     request_volume: int, hospitals: List[Input], strategy: Strategy
-) -> Tuple[float, List[Dict[Input, int]]]:
+) -> Tuple[float, List[Dict]]:
     if request_volume < 0:
         request_volume = 0
 
     suppliers = []
 
-    if strategy == "distance":
+    if strategy == Strategy.distance:
         hospitals = sorted(hospitals, key=lambda x: x.distance)
-    elif strategy == "greedy":
+    elif strategy == Strategy.greedy:
         hospitals = sorted(
             hospitals, key=lambda x: x.distance / x.quantity, reverse=True
         )
-    elif strategy == "cost":
+    elif strategy == Strategy.cost:
         hospitals = sorted(hospitals, key=lambda x: x.per_unit_cost)
     else:
         raise ValueError("Invalid strategy")
@@ -58,35 +56,15 @@ def process_allocation(
         total_cost += item.per_unit_cost * take_volume
         request_volume -= take_volume
 
-        item.quantity -= take_volume
-
         suppliers.append(
             {
                 "hospital_id": item.hospital_id,
                 "name": item.name,
                 "per_unit_cost": item.per_unit_cost,
                 "distance": item.distance,
-                "quantity": item.quantity,
+                "quantity": item.quantity - take_volume,
                 "volume_allocated": take_volume,
             }
         )
 
     return total_cost, suppliers
-
-
-def start_allocation_algorithm():
-    # Fetch requests from the database
-    # Implement allocation logic
-    # Store or log results
-    print("Running allocation algorithm...")
-
-    # Example of calling process_allocation
-    # You should replace this with actual requests from the database
-    requests = []  # Fetch this from your database
-    total_cost, suppliers = process_allocation(
-        request_volume=100, hospitals=requests, strategy=Strategy.cost
-    )
-    print(f"Total Cost: {total_cost}, Suppliers: {suppliers}")
-
-    # Schedule the next run
-    threading.Timer(3600, start_allocation_algorithm).start()  # Schedule every hour

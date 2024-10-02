@@ -1,4 +1,4 @@
-from fastapi import APIRouter, Depends, HTTPException
+from fastapi import APIRouter, BackgroundTasks, Depends, HTTPException
 from sqlmodel import Session, select
 from typing import List
 from src.models import MedicineRequest, User
@@ -9,12 +9,14 @@ from src.schemas import (
 )
 from src.dependencies import get_session
 from src.security import get_current_user
+from src.tasks import run_allocation_task
 
 router = APIRouter(prefix="/requests", tags=["requests"])
 
 
 @router.post("/", response_model=RequestRead)
 def create_request(
+    background_tasks: BackgroundTasks,
     request: RequestCreate,
     session: Session = Depends(get_session),
     current_user: User = Depends(get_current_user),
@@ -23,6 +25,7 @@ def create_request(
     session.add(db_request)
     session.commit()
     session.refresh(db_request)
+    background_tasks.add_task(run_allocation_task)
     return db_request
 
 

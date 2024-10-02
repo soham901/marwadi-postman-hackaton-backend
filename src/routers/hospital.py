@@ -1,4 +1,4 @@
-from fastapi import APIRouter, Depends, HTTPException
+from fastapi import APIRouter, Depends, HTTPException, status
 from sqlmodel import Session, select
 from typing import List
 
@@ -14,7 +14,9 @@ from src.dependencies import get_session
 router = APIRouter(tags=["hospitals"])
 
 
-@router.post("/hospitals/", response_model=HospitalRead)
+@router.post(
+    "/hospitals/", response_model=HospitalRead, status_code=status.HTTP_201_CREATED
+)
 def create_hospital(hospital: HospitalCreate, session: Session = Depends(get_session)):
     db_hospital = Hospital(**hospital.dict())
     session.add(db_hospital)

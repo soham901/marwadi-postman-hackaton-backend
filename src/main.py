@@ -3,13 +3,13 @@ from contextlib import asynccontextmanager
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
-from src.algo import start_allocation_algorithm
-from .routers import hospital, medicine, auth, requests
+# from src.algo import start_allocation_algorithm
+from .routers import hospital, medicine, auth, requests, allocation
 
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
-    start_allocation_algorithm()
+    # start_allocation_algorithm()
     yield
 
 
@@ -29,6 +29,7 @@ app.include_router(auth.router)
 app.include_router(hospital.router)
 app.include_router(medicine.router)
 app.include_router(requests.router)
+app.include_router(allocation.router)
 
 
 @app.get("/")

@@ -1,5 +1,13 @@
+from datetime import datetime
+from enum import Enum
 from pydantic import BaseModel
-from typing import List, Optional
+from typing import Dict, List, Optional
+
+
+class Strategy(str, Enum):
+    greedy = "greedy"
+    distance = "distance"
+    cost = "cost"
 
 
 class UserCreate(BaseModel):
@@ -15,25 +23,28 @@ class UserRead(BaseModel):
 class HospitalCreate(BaseModel):
     name: str
     address: str
+    latitude: float
+    longitude: float
 
 
 class HospitalRead(BaseModel):
     id: int
     name: str
     address: str
+    latitude: float
+    longitude: float
 
 
 class MedicineCreate(BaseModel):
     name: str
     description: str
+    quantity: int
+    price_per_unit: float
     hospital_id: int
 
 
-class MedicineRead(BaseModel):
+class MedicineRead(MedicineCreate):
     id: int
-    name: str
-    description: str
-    hospital_id: int
 
 
 class HospitalWithMedicines(HospitalRead):
@@ -54,8 +65,7 @@ class RequestCreate(BaseModel):
     hospital_id: int
     name: str
     quantity: int
-    per_unit_cost: float
-    distance: float
+    strategy: Optional[Strategy]
 
 
 class RequestRead(RequestCreate):
@@ -63,4 +73,19 @@ class RequestRead(RequestCreate):
 
 
 class MedicineRequest(RequestRead):
+    pass
+
+
+class AllocationResultCreate(BaseModel):
+    request_id: int
+    total_cost: float
+    suppliers: List[Dict]
+
+
+class AllocationResultRead(AllocationResultCreate):
+    id: int
+    created_at: datetime
+
+
+class AllocationResult(AllocationResultRead):
     pass
