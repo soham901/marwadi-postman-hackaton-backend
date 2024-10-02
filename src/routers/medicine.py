@@ -32,7 +32,6 @@ def read_medicines(
     skip: int = 0,
     limit: int = 100,
     session: Session = Depends(get_session),
-    current_user: User = Depends(get_current_user),
 ):
     medicines = session.exec(select(Medicine).offset(skip).limit(limit)).all()
     return medicines
@@ -42,7 +41,6 @@ def read_medicines(
 def read_medicine(
     medicine_id: int,
     session: Session = Depends(get_session),
-    current_user: User = Depends(get_current_user),
 ):
     medicine = session.get(Medicine, medicine_id)
     if medicine is None:
@@ -55,7 +53,6 @@ def update_medicine(
     medicine_id: int,
     medicine_update: MedicineUpdate,
     session: Session = Depends(get_session),
-    current_user: User = Depends(get_current_user),
 ):
     db_medicine = session.get(Medicine, medicine_id)
     if db_medicine is None:
@@ -75,7 +72,6 @@ def update_medicine(
 def delete_medicine(
     medicine_id: int,
     session: Session = Depends(get_session),
-    current_user: User = Depends(get_current_user),
 ):
     medicine = session.get(Medicine, medicine_id)
     if medicine is None:

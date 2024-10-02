@@ -41,9 +41,9 @@ def read_hospital(hospital_id: int, session: Session = Depends(get_session)):
     return hospital
 
 
-@router.get("/medicines/{medicine_id}", response_model=MedicineWithHospital)
-def read_medicine(medicine_id: int, session: Session = Depends(get_session)):
-    medicine = session.get(Medicine, medicine_id)
-    if medicine is None:
-        raise HTTPException(status_code=404, detail="Medicine not found")
-    return medicine
+# @router.get("/medicines/{medicine_id}", response_model=MedicineWithHospital)
+# def read_medicine(medicine_id: int, session: Session = Depends(get_session)):
+#     medicine = session.get(Medicine, medicine_id)
+#     if medicine is None:
+#         raise HTTPException(status_code=404, detail="Medicine not found")
+#     return medicine
