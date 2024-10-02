@@ -12,6 +12,8 @@ class Strategy(str, Enum):
 
 user_data = {"email": "testuser@example.com", "password": "testpassword"}
 
+api_user_data = {"email": "string", "password": "string"}
+
 hospitals_data = [
     {
         "name": "Rajkot hospital",
@@ -89,9 +91,15 @@ def setup_test_environment():
     print("Setting up test environment...")
 
     # Register and login
+    response = httpx.post(f"{API_URL}/register", json=api_user_data)
+    if response.status_code != 201:
+        raise Exception(f"Failed to register api user: {response.text}")
+    print("API User registered successfully")
+
+    # Register and login
     response = httpx.post(f"{API_URL}/register", json=user_data)
     if response.status_code != 201:
-        raise Exception(f"Failed to register user: {response.text}")
+        raise Exception(f"Failed to register normal user: {response.text}")
     print("User registered successfully")
 
     response = httpx.post(f"{API_URL}/login", json=user_data)
