@@ -1,16 +1,16 @@
 services:
-  caddy:
-    image: caddy:latest
-    restart: unless-stopped
-    ports:
-      - "80:80"
-      - "443:443"
-      - "443:443/udp"
-    volumes:
-      - ./Caddyfile:/etc/caddy/Caddyfile
-      - ./site:/srv
-      - caddy_data:/data
-      - caddy_config:/config
+  # caddy:
+  #   image: caddy:latest
+  #   restart: unless-stopped
+  #   ports:
+  #     - "80:80"
+  #     - "443:443"
+  #     - "443:443/udp"
+  #   volumes:
+  #     - ./Caddyfile:/etc/caddy/Caddyfile
+  #     - ./site:/srv
+  #     - caddy_data:/data
+  #     - caddy_config:/config
 
   app:
     build: .
@@ -29,9 +29,8 @@ services:
       - POSTGRES_DB=database
     volumes:
       - /root/mydata/postgresql-data:/var/lib/postgresql/data
-
-volumes:
-  caddy_data:
-    driver: local
-  caddy_config:
-    driver: local
+# volumes:
+#   caddy_data:
+#     driver: local
+#   caddy_config:
+#     driver: local
