@@ -63,4 +63,4 @@ class MedicineRequest(SQLModel, table=True):
 AllocationResult.request = Relationship(back_populates="allocations")
 
 
-SQLModel.metadata.create_all(engine)
+SQLModel.metadata.create_all(engine, checkfirst=True)
