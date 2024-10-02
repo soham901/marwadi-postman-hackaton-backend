@@ -2,17 +2,15 @@ name: Docker Image CI
 
 on:
   push:
-    branches: [ "main" ]
+    branches: ["main"]
   pull_request:
-    branches: [ "main" ]
+    branches: ["main"]
 
 jobs:
-
   build:
-
     runs-on: self-hosted
 
     steps:
-    - uses: actions/checkout@v4
-    - name: Run docker-compose up
-      run: docker-compose up -d --build
+      - uses: actions/checkout@v4
+      - name: Run docker-compose up
+        run: sudo docker compose up -d --build
