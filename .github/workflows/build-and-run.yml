@@ -18,11 +18,8 @@ jobs:
           sudo mkdir -p /root/mydata/postgresql-data
           sudo chown -R 999:999 /root/mydata/postgresql-data
 
-      - name: Stop all running Docker containers
-        run: sudo docker stop $(sudo docker ps -aq) || true
-
-      - name: Remove all Docker containers
-        run: sudo docker rm $(sudo docker ps -aq) || true
+      - name: Stop running Docker containers
+        run: sudo docker-compose down || true
 
       - name: Build and start Docker containers
-        run: sudo docker compose up -d --build
+        run: sudo docker-compose up -d --build
