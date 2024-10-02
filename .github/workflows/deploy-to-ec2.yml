@@ -24,13 +24,15 @@ jobs:
           docker tag my-python-app ${{ secrets.DOCKER_USERNAME }}/my-python-app
           docker push ${{ secrets.DOCKER_USERNAME }}/my-python-app
 
-      - name: Deploy to EC2
-        uses: appleboy/ssh-action@v1
+      - name: SSH Remote Commands
+        uses: appleboy/ssh-action@master
         with:
           host: ${{ secrets.EC2_HOST }}
           username: ${{ secrets.EC2_USERNAME }}
           key: ${{ secrets.EC2_KEY }}
+          port: 22 # Default SSH port, adjust if necessary
           script: |
+            # Your deployment commands here
             docker pull ${{ secrets.DOCKER_USERNAME }}/my-python-app
             docker stop my-python-app || true
             docker rm my-python-app || true
