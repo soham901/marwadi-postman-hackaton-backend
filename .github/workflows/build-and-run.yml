@@ -12,13 +12,11 @@ jobs:
 
     steps:
       - uses: actions/checkout@v4
+      - name: Stop all running Docker containers
+        run: sudo docker stop $(sudo docker ps -aq)
+      - name: Remove all Docker containers
+        run: sudo docker rm $(sudo docker ps -aq)
       - name: Build the Docker image
         run: sudo docker build -t backend .
-      - name: Stop and remove existing container if it exists
-        run: |
-          if [ "$(sudo docker ps -aq -f name=backend)" ]; then
-            sudo docker stop backend
-            sudo docker rm backend
-          fi
       - name: Run the Docker container on port 8000
         run: sudo docker run -d -p 8000:8000 backend
