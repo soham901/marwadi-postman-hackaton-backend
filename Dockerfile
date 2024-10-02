@@ -16,5 +16,8 @@ COPY . .
 # Expose port 8000 for FastAPI
 EXPOSE 8000
 
-# Default command to run FastAPI using Uvicorn
-CMD ["uvicorn", "src.main:app", "--host", "0.0.0.0", "--port", "8000"]
+# Install Gunicorn
+RUN pip install gunicorn
+
+# Default command to run FastAPI using Gunicorn
+CMD ["gunicorn", "src.main:app", "--workers", "4", "--worker-class", "uvicorn.workers.UvicornWorker", "--bind", "0.0.0.0:8000"]
