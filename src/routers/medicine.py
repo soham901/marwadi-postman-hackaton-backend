@@ -1,7 +1,7 @@
 from fastapi import APIRouter, Depends, HTTPException
 from sqlmodel import Session, select
 from typing import List
-from src.models import Medicine, User
+from src.models import Medicine
 from src.schemas import (
     MedicineCreate,
     MedicineRead,
@@ -9,7 +9,6 @@ from src.schemas import (
     MedicineWithHospital,
 )
 from src.dependencies import get_session
-from src.security import get_current_user
 
 router = APIRouter(prefix="/medicines", tags=["medicines"])
 
@@ -18,7 +17,6 @@ router = APIRouter(prefix="/medicines", tags=["medicines"])
 def create_medicine(
     medicine: MedicineCreate,
     session: Session = Depends(get_session),
-    current_user: User = Depends(get_current_user),
 ):
     db_medicine = Medicine(**medicine.dict())
     session.add(db_medicine)
