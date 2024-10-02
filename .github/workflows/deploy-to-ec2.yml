@@ -32,11 +32,6 @@ jobs:
           key: ${{ secrets.EC2_KEY }}
           port: 22
           script: |
-            # Install Docker if not already installed
-            sudo apt update && sudo apt install -y docker.io
-            sudo systemctl start docker
-            sudo systemctl enable docker
-
             # Your deployment commands here
             docker pull ${{ secrets.DOCKER_USERNAME }}/my-python-app
             docker stop my-python-app || true
