@@ -30,3 +30,10 @@ This project focuses on optimizing healthcare resource allocation using differen
 - **Greedy**: Allocates resources based on the highest value (e.g., cost per distance) in descending order.
 - **Distance-Based**: Prioritizes hospitals closest to the resource.
 - **Cost-Based**: Focuses on the least expensive options for resource allocation.
+
+## Links
+
+- **Postman Workspace**: [Postman Workspace](https://app.getpostman.com/join-team?invite_code=45048bec-261c-44e9-ab1c-3b29ceba48b9)
+- **Backend Repository**: [GitHub - Backend](https://github.com/soham901/marwadi-postman-hackaton-backend)
+- **Frontend Repository**: [GitHub - Frontend](https://github.com/EhsaasChaudhary/sanjivani)
+- **API Documentation (Swagger UI)**: [API Docs](https://healthcareinfra.soham901.me/docs)
