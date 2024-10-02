@@ -20,9 +20,9 @@ jobs:
 
       - name: Build and push the image
         run: |
-          docker build -t my-python-app .
-          docker tag my-python-app ${{ secrets.DOCKER_USERNAME }}/my-python-app
-          docker push ${{ secrets.DOCKER_USERNAME }}/my-python-app
+          sudo docker build -t my-python-app .
+          sudo docker tag my-python-app ${{ secrets.DOCKER_USERNAME }}/my-python-app
+          sudo docker push ${{ secrets.DOCKER_USERNAME }}/my-python-app
 
       - name: SSH Remote Commands
         uses: appleboy/ssh-action@v1.0.3
@@ -33,7 +33,7 @@ jobs:
           port: 22
           script: |
             # Your deployment commands here
-            docker pull ${{ secrets.DOCKER_USERNAME }}/my-python-app
-            docker stop my-python-app || true
-            docker rm my-python-app || true
-            docker run -d -p 8000:8000 ${{ secrets.DOCKER_USERNAME }}/my-python-app
+            sudo docker pull ${{ secrets.DOCKER_USERNAME }}/my-python-app
+            sudo docker stop my-python-app || true
+            sudo docker rm my-python-app || true
+            sudo docker run -d -p 8000:8000 ${{ secrets.DOCKER_USERNAME }}/my-python-app
