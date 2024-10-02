@@ -1,6 +1,7 @@
-```bash
-docker build -t postman-hackathon-backend .
-docker run -d -p 8000:8000 postman-hackathon-backend
+### run locally
 
+```bash
 docker-compose up -d --build
 ```
+
+visit the http://localhost:8000/docs for OPEN API docs
