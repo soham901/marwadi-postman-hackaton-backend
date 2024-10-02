@@ -1,5 +1,7 @@
-# Base image for Python
 FROM python:3.11-slim
+
+# Install gcc and other necessary development tools
+RUN apt update && apt install -y gcc build-essential
 
 # Set the working directory
 WORKDIR /app
