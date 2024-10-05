@@ -1,7 +1,7 @@
 from fastapi import APIRouter, BackgroundTasks, Depends, HTTPException
 from sqlmodel import Session, select
 from typing import List
-from src.models import MedicineRequest, User
+from src.models import Medicine, MedicineRequest, User
 from src.schemas import (
     RequestCreate,
     RequestRead,
@@ -21,6 +21,17 @@ def create_request(
     session: Session = Depends(get_session),
     current_user: User = Depends(get_current_user),
 ):
+    # Query the medicine using SQLModel's select
+    statement = select(Medicine).where(Medicine.name == request.name)
+    result = session.exec(statement)
+    medicine = result.first()
+    
+    if not medicine:
+        raise HTTPException(status_code=404, detail="Medicine not found.")
+    
+    if request.quantity > medicine.quantity:
+        raise HTTPException(status_code=400, detail="Not enough quantity available.")
+    
     db_request = MedicineRequest(**request.dict())
     session.add(db_request)
     session.commit()
