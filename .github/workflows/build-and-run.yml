@@ -16,14 +16,6 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Cache Docker layers
-        uses: actions/cache@v3
-        with:
-          path: /tmp/.buildx-cache
-          key: ${{ runner.os }}-docker-${{ github.sha }}
-          restore-keys: |
-            ${{ runner.os }}-docker-
-
       - name: Create PostgreSQL data directory
         run: |
           sudo mkdir -p /root/mydata/postgresql-data
@@ -33,4 +25,4 @@ jobs:
         run: sudo docker compose down || true
 
       - name: Build and start Docker containers
-        run: sudo docker compose up -d --build --cache-from type=local,src=/tmp/.buildx-cache --cache-to type=local,dest=/tmp/.buildx-cache
+        run: sudo docker compose up -d --build
