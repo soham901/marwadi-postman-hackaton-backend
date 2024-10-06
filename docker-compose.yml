@@ -1,17 +1,4 @@
 services:
-  # caddy:
-  #   image: caddy:latest
-  #   restart: unless-stopped
-  #   ports:
-  #     - "80:80"
-  #     - "443:443"
-  #     - "443:443/udp"
-  #   volumes:
-  #     - ./Caddyfile:/etc/caddy/Caddyfile
-  #     - ./site:/srv
-  #     - caddy_data:/data
-  #     - caddy_config:/config
-
   app:
     build: .
     ports:
@@ -20,6 +7,11 @@ services:
       - db
     environment:
       - DATABASE_URL=postgresql://user:password@db:5432/database
+    deploy:
+      resources:
+        limits:
+          cpus: "0.5"
+          memory: "256M"
 
   db:
     image: postgres
@@ -29,8 +21,8 @@ services:
       - POSTGRES_DB=database
     volumes:
       - /root/mydata/postgresql-data:/var/lib/postgresql/data
-# volumes:
-#   caddy_data:
-#     driver: local
-#   caddy_config:
-#     driver: local
+    deploy:
+      resources:
+        limits:
+          cpus: "0.25"
+          memory: "512M"
